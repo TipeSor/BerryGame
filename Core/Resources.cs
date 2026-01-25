@@ -16,7 +16,7 @@ namespace BerryGame
         public void AddRef()
         {
             if (_disposed)
-                throw new ObjectDisposedException(nameof(SharedResource<>));
+                throw new ObjectDisposedException(nameof(SharedResource<TNative>));
 
             Interlocked.Increment(ref _refCount);
         }
@@ -66,7 +66,7 @@ namespace BerryGame
         }
     }
 
-    internal sealed class Resource<TNative> : IDisposable
+    public sealed class Resource<TNative> : IDisposable
     {
         private SharedResource<TNative> _shared;
         private bool _disposed;
@@ -88,7 +88,7 @@ namespace BerryGame
         }
     }
 
-    internal static class Textures
+    public static class Textures
     {
         private static readonly ResourceCache<string, Texture2D> _cache =
             new(
@@ -100,7 +100,7 @@ namespace BerryGame
             => new(_cache.Acquire(path));
     }
 
-    internal static class Sounds
+    public static class Sounds
     {
         private static readonly ResourceCache<string, Sound> _cache =
             new(
@@ -109,30 +109,6 @@ namespace BerryGame
             );
 
         public static Resource<Sound> Load(string path)
-            => new(_cache.Acquire(path));
-    }
-
-    internal static class FShaders
-    {
-        private static readonly ResourceCache<string, Shader> _cache =
-            new(
-                static s => Raylib.LoadShader(string.Empty, s),
-                Raylib.UnloadShader
-            );
-
-        public static Resource<Shader> Load(string path)
-            => new(_cache.Acquire(path));
-    }
-
-    internal static class VShaders
-    {
-        private static readonly ResourceCache<string, Shader> _cache =
-            new(
-                static s => Raylib.LoadShader(s, string.Empty),
-                Raylib.UnloadShader
-            );
-
-        public static Resource<Shader> Load(string path)
             => new(_cache.Acquire(path));
     }
 }

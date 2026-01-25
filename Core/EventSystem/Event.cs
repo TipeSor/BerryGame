@@ -3,7 +3,6 @@ using Raylib_cs;
 
 namespace BerryGame
 {
-    // Event system
     public struct Event
     {
         internal static IEventHandler? mouseOwner = default;
@@ -13,8 +12,8 @@ namespace BerryGame
         public char Character;              // The character typed.
         public Vector2 Delta;               // The relative movement of the mouse compared to last event.
         public KeyboardKey KeyCode;         // The raw key code for keyboard events.
-        public EventModifiers Modifiers;    // 	Which modifier keys are held down.
-        public Vector2 MousePosition;       // 	The mouse position.
+        public EventModifiers Modifiers;    // Which modifier keys are held down.
+        public Vector2 MousePosition;       // The mouse position.
         public EventType Type;              // The type of event.
 
         public readonly bool Alt => Modifiers.HasFlag(EventModifiers.Alt);                          // Is Alt/Option key held down? 

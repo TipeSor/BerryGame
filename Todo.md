@@ -1,4 +1,4 @@
-# Done (solid, works)
+# Done
 - Moving camera
 - Fixed size world
 - Mouse event system
