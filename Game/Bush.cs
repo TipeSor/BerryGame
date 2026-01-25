@@ -5,7 +5,7 @@ namespace BerryGame
 {
     internal record Bush : IEventHandler, IDisposable
     {
-        public static long count = 0;
+        public static long Count = 0;
         public static Texture2D Texture;
 
         public Rectangle Rect;
@@ -16,6 +16,7 @@ namespace BerryGame
         public Vector2 Size => Rect.Size;
 
         private readonly Queue<Fruit> Fruits;
+        private readonly Color[] colors;
         public bool IsActive;
 
         public bool Hovered;
@@ -38,9 +39,10 @@ namespace BerryGame
             IsActive = true;
 
             Fruits = [];
+
             Hovered = false;
 
-            if (count++ == 0)
+            if (Count++ == 0)
                 LoadTexture();
         }
 
@@ -75,7 +77,9 @@ namespace BerryGame
             {
                 float dx = rng.NextSingle() * Size.X;
                 float dy = rng.NextSingle() * Size.Y;
-                Fruit fruit = new(MainCore, Position + new Vector2(dx, dy));
+                int temp = rng.Next(0, 40);
+                Color color = new Color(rng.Next(200, 255), temp, temp);
+                Fruit fruit = new(MainCore, Position + new Vector2(dx, dy), color);
                 Fruits.Enqueue(fruit);
                 Program.handlersToAdd.Push(fruit);
             }
@@ -117,7 +121,7 @@ namespace BerryGame
 
             Fruits.Clear();
 
-            if (Texture.Id != 0 && --count == 0)
+            if (Texture.Id != 0 && --Count == 0)
             {
                 Raylib.UnloadTexture(Texture);
                 Texture = default;
