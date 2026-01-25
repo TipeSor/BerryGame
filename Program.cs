@@ -30,8 +30,9 @@ namespace BerryGame
             World world = new World(Player, ScreenSize);
             Core core = new Core(WorldRect.Center);
             Bush bush = new Bush(core, Vector2.One * 256);
+            Rock rock = new Rock(Vector2.One * 640);
 
-            handlers = [world, Player, core, bush];
+            handlers = [world, Player, core, bush, rock];
 
             while (!Raylib.WindowShouldClose())
             {
@@ -54,6 +55,7 @@ namespace BerryGame
                             if (hander is Player p) p.Update();
                             if (hander is Bush b) b.Update();
                             if (hander is Fruit f) f.Update();
+                            if (hander is Rock r) r.Update();
                         }
                     }
                     if (TimeManager.ShouldRunFixedUpdate())
@@ -87,7 +89,7 @@ namespace BerryGame
                     // mouse 
                     {
                         Vector2 delta = Raylib.GetMouseDelta();
-                        Vector2 position = Raylib.GetMousePosition() + Player.Position;
+                        Vector2 position = Raylib.GetMousePosition() + Player.Position - Player.camera.Offset / 2.0f;
                         if (delta != Vector2.Zero)
                         {
                             Event.current = new Event
