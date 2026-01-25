@@ -7,10 +7,9 @@
 - Berry pick up
 
 # In-progress
-
+- Berry spawning system
 
 # Next up
-- Berry spawning system
 - Store berries
 - Inventory system
 
