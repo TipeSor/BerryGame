@@ -102,5 +102,33 @@ namespace BerryGame
                 Draw = () => Raylib.DrawRectangleLinesEx(rect, thickness, tint)
             });
         }
+
+        public static void DrawDot(
+            Vector2 position,
+            float thickness,
+            Color tint)
+        {
+            if (Event.current.Type != EventType.Repaint)
+                return;
+
+            if (currentHandler == null)
+                return;
+
+            Rectangle rect = new Rectangle
+            {
+                X = position.X - thickness / 2.0f,
+                Y = position.Y - thickness / 2.0f,
+                Width = thickness,
+                Height = thickness
+            };
+
+            InteractionQueue.Submit(new InteractionEntry
+            {
+                Z = (Layer * 1000) + Zindex++,
+                Rect = rect,
+                Handler = currentHandler,
+                Draw = () => Raylib.DrawCircleV(position, thickness, tint)
+            });
+        }
     }
 }
