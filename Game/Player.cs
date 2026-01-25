@@ -9,11 +9,12 @@ namespace BerryGame
         public Rectangle WorldRect;
         public Vector2 ScreenSize;
 
+        private Vector2 MousePosition;
+
         public Vector2 Position => camera.Target - (camera.Offset / 2.0f);
 
         public Player(Rectangle worldRect, Vector2 screenSize)
         {
-
             WorldRect = worldRect;
             ScreenSize = screenSize;
 
@@ -30,11 +31,15 @@ namespace BerryGame
         {
             string text =
             $"""
-            x: {camera.Target.X - (camera.Offset.X / 2.0f)}
-            y: {camera.Target.Y - (camera.Offset.Y / 2.0f)}
+            x: {Position.X}
+            y: {Position.Y}
             """;
 
-            GUI.Label(text, Position, Color.White);
+            if (Event.current.IsMouse)
+                MousePosition = Event.current.MousePosition;
+
+            GUI.Label(text, Position + camera.Offset / 2.0f, Color.White);
+            GUI.DrawDot(MousePosition, 8, Color.DarkBlue);
         }
 
         public void Update()
@@ -52,6 +57,7 @@ namespace BerryGame
                 delta += Vector2.UnitX;
 
             camera.Target += delta * TimeManager.Delta * speed;
+            MousePosition += delta * TimeManager.Delta * speed;
 
             camera.Target = Vector2.Clamp(
                 value1: camera.Target,
