@@ -1,4 +1,5 @@
 using System.Numerics;
+using System.Security.Cryptography;
 using Raylib_cs;
 
 namespace BerryGame
@@ -22,9 +23,11 @@ namespace BerryGame
         public bool Picked;
         public bool IsActive;
 
+        private Color Color;
+
         private bool _disposed;
 
-        public Fruit(Core core, Vector2 center)
+        public Fruit(Core core, Vector2 center, Color color)
         {
             Vector2 size = Vector2.One * 16;
 
@@ -39,6 +42,8 @@ namespace BerryGame
 
             Picked = false;
             IsActive = true;
+
+            Color = color;
 
             if (count++ == 0)
                 LoadTexture();
@@ -89,7 +94,7 @@ namespace BerryGame
             if (IsActive)
             {
                 GUI.SetLayer(1);
-                GUI.DrawTexture(Texture, Rect, Color.Red);
+                GUI.DrawTexture(Texture, Rect, Color);
             }
         }
 
