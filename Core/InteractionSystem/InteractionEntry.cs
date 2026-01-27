@@ -1,12 +1,12 @@
 using Raylib_cs;
 
-namespace BerryGame
+namespace BerryEngine
 {
     internal struct InteractionEntry
     {
         public int Z;
         public Rectangle Rect;
-        public IEventHandler Handler;
+        public GameObject Handler;
         public Action Draw;
     }
 }

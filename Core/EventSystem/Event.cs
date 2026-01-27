@@ -1,12 +1,12 @@
 using System.Numerics;
 using Raylib_cs;
 
-namespace BerryGame
+namespace BerryEngine
 {
     public struct Event
     {
-        internal static IEventHandler? mouseOwner = default;
-        public static Event current = default;
+        internal static GameObject? MouseOwner = default;
+        public static Event Current = default;
 
         public MouseButton Button;          // Which mouse button was pressed.
         public char Character;              // The character typed.
@@ -31,7 +31,7 @@ namespace BerryGame
                 return;
 
             Type = EventType.Used;
-            current = this;
+            Current = this;
         }
     }
 }

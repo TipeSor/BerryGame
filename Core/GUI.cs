@@ -1,13 +1,13 @@
 using System.Numerics;
 using Raylib_cs;
 
-namespace BerryGame
+namespace BerryEngine
 {
     public static class GUI
     {
         private static int Layer = 0;
         private static int Zindex = 0;
-        private static IEventHandler? currentHandler = null;
+        private static GameObject? current = null;
 
         public static void SetLayer(int layer)
         {
@@ -19,16 +19,16 @@ namespace BerryGame
             Zindex = zindex;
         }
 
-        public static void Begin(IEventHandler hander)
+        public static void Begin(GameObject obj)
         {
             Layer = 0;
             Zindex = 0;
-            currentHandler = hander;
+            current = obj;
         }
 
         public static void End()
         {
-            currentHandler = null;
+            current = null;
         }
 
         public static void DrawTexture(
@@ -36,17 +36,17 @@ namespace BerryGame
             Rectangle rect,
             Color tint)
         {
-            if (Event.current.Type != EventType.Repaint)
+            if (Event.Current.Type != EventType.Repaint)
                 return;
 
-            if (currentHandler == null)
+            if (current == null)
                 return;
 
             InteractionQueue.Submit(new InteractionEntry
             {
                 Z = (Layer * 1000) + Zindex++,
                 Rect = rect,
-                Handler = currentHandler,
+                Handler = current,
                 Draw = () => Raylib.DrawTextureV(texture, rect.Position, tint)
             });
         }
@@ -56,10 +56,10 @@ namespace BerryGame
             Vector2 position,
             Color tint)
         {
-            if (Event.current.Type != EventType.Repaint)
+            if (Event.Current.Type != EventType.Repaint)
                 return;
 
-            if (currentHandler == null)
+            if (current == null)
                 return;
 
             const int fontSize = 16;
@@ -72,13 +72,13 @@ namespace BerryGame
                 spacing
             );
 
-            Rectangle rect = new Rectangle(position, size);
+            Rectangle rect = new(position, size);
 
             InteractionQueue.Submit(new InteractionEntry
             {
                 Z = (Layer * 1000) + Zindex++,
                 Rect = rect,
-                Handler = currentHandler,
+                Handler = current,
                 Draw = () => Raylib.DrawText(text, (int)position.X, (int)position.Y, 16, tint)
             });
         }
@@ -88,17 +88,17 @@ namespace BerryGame
             float thickness,
             Color tint)
         {
-            if (Event.current.Type != EventType.Repaint)
+            if (Event.Current.Type != EventType.Repaint)
                 return;
 
-            if (currentHandler == null)
+            if (current == null)
                 return;
 
             InteractionQueue.Submit(new InteractionEntry
             {
                 Z = (Layer * 1000) + Zindex++,
                 Rect = rect,
-                Handler = currentHandler,
+                Handler = current,
                 Draw = () => Raylib.DrawRectangleLinesEx(rect, thickness, tint)
             });
         }
@@ -108,16 +108,16 @@ namespace BerryGame
             float thickness,
             Color tint)
         {
-            if (Event.current.Type != EventType.Repaint)
+            if (Event.Current.Type != EventType.Repaint)
                 return;
 
-            if (currentHandler == null)
+            if (current == null)
                 return;
 
-            Rectangle rect = new Rectangle
+            Rectangle rect = new()
             {
-                X = position.X - thickness / 2.0f,
-                Y = position.Y - thickness / 2.0f,
+                X = position.X - (thickness / 2.0f),
+                Y = position.Y - (thickness / 2.0f),
                 Width = thickness,
                 Height = thickness
             };
@@ -126,7 +126,7 @@ namespace BerryGame
             {
                 Z = (Layer * 1000) + Zindex++,
                 Rect = rect,
-                Handler = currentHandler,
+                Handler = current,
                 Draw = () => Raylib.DrawCircleV(position, thickness, tint)
             });
         }

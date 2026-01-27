@@ -1,4 +1,4 @@
-namespace BerryGame
+namespace BerryEngine
 {
 #pragma warning disable IDE0055
     [Flags]

@@ -1,6 +1,6 @@
 using Raylib_cs;
 
-namespace BerryGame
+namespace BerryEngine
 {
     public static class TimeManager
     {

@@ -1,4 +1,4 @@
-namespace BerryGame
+namespace BerryEngine
 {
     public enum EventType
     {

@@ -1,4 +1,4 @@
-namespace BerryGame
+namespace BerryEngine
 {
     internal static class InteractionQueue
     {

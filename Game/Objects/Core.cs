@@ -1,22 +1,18 @@
-using System.Numerics;
 using Raylib_cs;
 
 namespace BerryGame
 {
-    internal record Core : IEventHandler, IDisposable
+    public class Core : GameObject, IDrawable, IGUIHandler, IDisposable
     {
-        public Rectangle Rect;
-
-        public Vector2 Position => Rect.Position;
-        public Vector2 Center => Rect.Center;
-        public Vector2 Size => Rect.Size;
-
         public Texture2D Texture;
 
-        public Core(Vector2 center)
+        public int Layer => 0;
+        public int Depth => 0;
+
+        public long BerryCounter = 0;
+
+        public override void Awake()
         {
-            Vector2 size = Vector2.One * 64;
-            Rect = new Rectangle(center - (size / 2.0f), size);
             LoadTexture();
         }
 
@@ -40,15 +36,22 @@ namespace BerryGame
             Raylib.UnloadRenderTexture(rtex);
         }
 
-        public void Collect(Fruit fruit)
+        public void Collect(Berry berry)
         {
-            fruit.IsActive = false;
-            fruit.Dispose();
+            BerryCounter++;
+            Manager.Destroy(berry);
         }
 
-        public void OnEvent()
+        public void Draw()
         {
-            GUI.DrawTexture(Texture, Rect, Color.White);
+            Raylib.BeginMode2D(Shared.Camera);
+            Raylib.DrawTextureV(Texture, Rect.Position, Color.White);
+            Raylib.EndMode2D();
+        }
+
+        public void OnGUI()
+        {
+            GUILayout.Label($"Berries: {BerryCounter}", Color.White);
         }
 
         public void Dispose()
