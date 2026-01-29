@@ -35,18 +35,18 @@ namespace BerryEngine
             return obj;
         }
 
-        public static bool TryFind<T>([NotNullWhen(true)] out GameObject? obj)
+        public static bool TryFind<T>([NotNullWhen(true)] out T? obj)
         {
             for (int i = 0; i < objects.Count; i++)
-                if (objects[i] is T) { obj = objects[i]; return true; }
+                if (objects[i] is T typed) { obj = typed; return true; }
 
-            obj = null;
+            obj = default;
             return false;
         }
 
-        public static bool TryFindAll<T>(out GameObject[] obj)
+        public static bool TryFindAll<T>(out T[] obj)
         {
-            obj = [.. objects.Where(static o => o is T)];
+            obj = [.. objects.OfType<T>()];
             return obj.Length > 0;
         }
 
