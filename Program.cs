@@ -14,6 +14,8 @@ namespace BerryGame
         public static Rectangle WorldRect = new(0, 0, 1024, 1024);
 
         public static readonly Random RNG = new();
+
+        public static bool SmartMinions = true;
     }
 
     public class Program
@@ -29,7 +31,11 @@ namespace BerryGame
             Shared.Player = Manager.Create<Player>();
             Shared.Core = Manager.Create<Core>(Shared.WorldRect.Center, Vector2.One * 64);
 
-            Manager.Create<BushSpawner>();
+            BushSpawner spawner = Manager.Create<BushSpawner>();
+            spawner.BushLimit = 20;
+
+            Minion minion = Manager.Create<Minion>(64, 64, 16, 16);
+            Shared.Player.Following = minion;
 
             Manager.Run();
         }

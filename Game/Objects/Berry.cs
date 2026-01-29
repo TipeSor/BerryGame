@@ -11,7 +11,7 @@ namespace BerryGame
         private Vector2 Begin;
         private Vector2 Target => Shared.Core.Position;
 
-        public int Layer => 1;
+        public int Layer => 2;
         public int Depth => 0;
 
         private float PathProgress;

@@ -15,11 +15,17 @@ namespace BerryGame
 
         public void CreateBush()
         {
-            float dx = Shared.RNG.NextSingle() * 512;
-            float dy = Shared.RNG.NextSingle() * 512;
+            float width = Shared.WorldRect.Width;
+            float height = Shared.WorldRect.Height;
 
-            Bush bush = Manager.Create<Bush>(128 + dx, 128 + dy, 64, 32);
-            bush.BerryLimit = 5;
+            float ox = 128;
+            float oy = 128;
+
+            float dx = (Shared.RNG.NextSingle() * (width - ox)) + (ox / 2.0f);
+            float dy = (Shared.RNG.NextSingle() * (height - oy)) + (oy / 2.0f);
+
+            Bush bush = Manager.Create<Bush>(dx, dy, 64, 32);
+            bush.BerryLimit = Shared.RNG.Next(2, 5);
             Bushes.Add(bush);
         }
     }

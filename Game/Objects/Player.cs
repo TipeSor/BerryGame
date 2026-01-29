@@ -14,6 +14,8 @@ namespace BerryGame
         public int Layer => -1;
         public int Depth => 0;
 
+        public GameObject? Following;
+
         public override void Awake()
         {
             Camera = new Camera2D(
@@ -28,6 +30,21 @@ namespace BerryGame
 
         public override void Update()
         {
+            if (Raylib.IsKeyPressed(KeyboardKey.Q))
+            {
+                if (Manager.TryFindAll(out Minion[] obj))
+                {
+                    int index = Following is null ? 0 : Array.IndexOf(obj, Following);
+                    int next = (index + 1) % obj.Length;
+                    Following = obj[next];
+                }
+            }
+
+            if (Raylib.IsKeyPressed(KeyboardKey.E))
+            {
+                Manager.Create<Minion>(MouseContext.Position, Vector2.One * 16);
+            }
+
             Vector2 delta = Vector2.Zero;
             float speed = 200;
 
@@ -40,7 +57,13 @@ namespace BerryGame
             if (Raylib.IsKeyDown(KeyboardKey.D))
                 delta += Vector2.UnitX;
 
-            Camera.Target += delta * TimeManager.Delta * speed;
+            if (Following is not null && delta != Vector2.Zero)
+                Following = null;
+
+            if (Following is null)
+                Camera.Target += delta * TimeManager.Delta * speed;
+            else
+                Camera.Target = Vector2.Lerp(Camera.Target, Following.Position - (ScreenSize / 2.0f), TimeManager.Delta * 3);
 
             Camera.Target = Vector2.Clamp(
                 value1: Camera.Target,

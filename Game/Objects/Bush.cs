@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using Raylib_cs;
 
@@ -15,7 +16,7 @@ namespace BerryGame
         private bool _disposed;
 
         public int Layer => 1;
-        public int Depth => 0;
+        public int Depth => Hovered ? 1 : 0;
 
         public BushState State;
         public float Progress = 0.0f;
@@ -84,14 +85,12 @@ namespace BerryGame
                 Hovered = MouseContext.CheckOverlap(this) && !MouseContext.IsUsed;
                 if (Hovered)
                 {
-                    if (MouseContext.IsButtonDown(MouseButton.Left))
+                    if (MouseContext.IsButtonDown(MouseButton.Left) &&
+                        TryGetBerry(out Berry? b))
                     {
-                        if (Berries.TryDequeue(out Berry? b))
-                        {
-                            b.Pick();
-                        }
+                        b.Pick();
+                        MouseContext.Use();
                     }
-                    MouseContext.Use();
                 }
             }
         }
@@ -134,6 +133,9 @@ namespace BerryGame
                 Berries.Enqueue(berry);
             }
         }
+
+        public bool TryGetBerry([NotNullWhen(true)] out Berry? berry)
+            => Berries.TryDequeue(out berry);
 
         public void Draw()
         {
